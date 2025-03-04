@@ -13,16 +13,21 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-    }
+    
 }
 
 plugins {
-    id("dev.flutter.flutter-plugin-loader") version "1.0.0"
-    id("com.android.application") version "8.7.0" apply false
+    id("dev.flutter.flutter-plugin-loader") version "1.1.0"
+    id("com.android.application")
     // START: FlutterFire Configuration
-    id("com.google.gms.google-services") version("4.3.15") apply false
+    id("com.google.gms.google-services")
     // END: FlutterFire Configuration
-    id("org.jetbrains.kotlin.android") version "1.8.22" apply false
+    id("org.jetbrains.kotlin.android") // Updated here from "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id("dev.flutter.flutter-gradle-plugin")
 }
 
+
 include(":app")
+includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+}

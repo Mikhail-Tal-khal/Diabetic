@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/health_tip.dart';
 
 class HealthTipsProvider with ChangeNotifier {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<HealthTip> _tips = [];
   bool _isLoading = false;
   String? _error;
@@ -91,11 +89,6 @@ Tips for healthy eating:
   Future<void> fetchHealthTips() async {
     try {
       setState(() => _isLoading = true);
-      
-      // For demo purposes, using sample data
-      // In production, fetch from Firestore:
-      // final snapshot = await _firestore.collection('health_tips').get();
-      // _tips = snapshot.docs.map((doc) => HealthTip.fromJson(doc.data())).toList();
       
       _tips = sampleTips;
       _error = null;

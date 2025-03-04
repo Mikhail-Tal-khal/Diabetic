@@ -1,14 +1,14 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:diabetes_detection/providers/user_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'package:diabetes_detection/providers/auth_provider.dart';
 import 'package:diabetes_detection/widgets/custom_button.dart';
 import 'package:diabetes_detection/widgets/custom_text_field.dart';
-
 import '../../utils/validators.dart' show Validators;
+import '../../widgets/social_login_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,13 +17,14 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderStateMixin {
+class _SignUpScreenState extends State<SignUpScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
+
   bool _isLoading = false;
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
@@ -44,14 +45,8 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 800),
     );
 
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOut,
-      ),
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
 
     _animationController.forward();
@@ -71,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
     });
 
     try {
-      await context.read<AuthProvider>().signUp(
+      await context.read<UserAuthProvider>().signUp(
         email: _emailController.text.trim(),
         password: _passwordController.text,
         name: _nameController.text.trim(),
@@ -120,10 +115,7 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 32),
-                  Lottie.asset(
-                    'assets/animations/signup.json',
-                    height: 200,
-                  ),
+                  Lottie.asset('assets/animations/signup.json', height: 200),
                   const SizedBox(height: 32),
                   Text(
                     'Create Account',
@@ -133,8 +125,10 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                   const SizedBox(height: 8),
                   Text(
                     'Join us for better health monitoring',
-                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withOpacity(0.7),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -144,7 +138,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.error.withOpacity(0.1),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.error.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -215,9 +211,14 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                     },
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                        _passwordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                       ),
-                      onPressed: () => setState(() => _passwordVisible = !_passwordVisible),
+                      onPressed:
+                          () => setState(
+                            () => _passwordVisible = !_passwordVisible,
+                          ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -238,9 +239,16 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                     },
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _confirmPasswordVisible ? Icons.visibility_off : Icons.visibility,
+                        _confirmPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                       ),
-                      onPressed: () => setState(() => _confirmPasswordVisible = !_confirmPasswordVisible),
+                      onPressed:
+                          () => setState(
+                            () =>
+                                _confirmPasswordVisible =
+                                    !_confirmPasswordVisible,
+                          ),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -291,7 +299,11 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       TextButton(
-                        onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+                        onPressed:
+                            () => Navigator.pushReplacementNamed(
+                              context,
+                              '/login',
+                            ),
                         child: const Text('Login'),
                       ),
                     ],
@@ -309,9 +321,9 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
     try {
       setState(() => _isLoading = true);
       if (provider == 'google') {
-        await context.read<AuthProvider>().signInWithGoogle();
+        await context.read<UserAuthProvider>().signInWithGoogle();
       } else if (provider == 'apple') {
-        await context.read<AuthProvider>().signInWithApple();
+        await context.read<UserAuthProvider>().signInWithApple();
       }
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/home');
@@ -335,5 +347,3 @@ class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderSt
     super.dispose();
   }
 }
-
-

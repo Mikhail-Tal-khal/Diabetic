@@ -1,17 +1,35 @@
+import java.util.Properties
+
 plugins {
-    id("com.android.application")
-    // START: FlutterFire Configuration
-    id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id("com.android.application") version "8.7.0"
+    id("org.jetbrains.kotlin.android") version "1.8.22"
+    id("com.google.gms.google-services") version "4.3.15"
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+repositories {
+    google()
+    mavenCentral()
+    // Repository for Flutter artifacts
+    maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
+    // Add Flutter engine artifacts from the local Flutter SDK if available.
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        val properties = Properties()
+        localPropertiesFile.inputStream().use { properties.load(it) }
+        val flutterSdk = properties.getProperty("flutter.sdk")
+        if (flutterSdk != null) {
+            maven {
+                url = uri("$flutterSdk/bin/cache/artifacts/engine/android")
+            }
+        }
+    }
 }
 
 android {
     namespace = "com.example.diabetes_detection"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 33
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -23,20 +41,13 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.diabetes_detection"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 23
+        targetSdk = 33
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }

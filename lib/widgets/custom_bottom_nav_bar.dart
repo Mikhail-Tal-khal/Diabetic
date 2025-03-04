@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../screens/detection/diabetes_detection_screen.dart';
+
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({super.key});
 

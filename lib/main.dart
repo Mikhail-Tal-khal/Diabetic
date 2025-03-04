@@ -1,9 +1,9 @@
 import 'package:diabetes_detection/providers/health_tips_provider.dart';
+import 'package:diabetes_detection/providers/user_auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:diabetes_detection/routes/app_routes.dart';
-import 'package:diabetes_detection/providers/auth_provider.dart';
 import 'package:diabetes_detection/providers/theme_provider.dart';
 import 'package:diabetes_detection/themes/app_theme.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => UserAuthProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => HealthTipsProvider()),
       ],

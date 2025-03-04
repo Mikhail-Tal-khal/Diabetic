@@ -1,5 +1,4 @@
 // ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:diabetes_detection/widgets/custom_button.dart';
@@ -43,14 +42,13 @@ class WelcomeScreen extends StatelessWidget {
               CustomButton(
                 onPressed: () => Navigator.pushNamed(context, '/login'),
                 text: 'Login',
-                icon: Icons.login, style: null,
+                icon: Icons.login,
               ),
               const SizedBox(height: 16),
               CustomButton(
                 onPressed: () => Navigator.pushNamed(context, '/signup'),
                 text: 'Create Account',
                 icon: Icons.person_add,
-                style: CustomButtonStyle.outlined,
               ),
               const SizedBox(height: 24),
             ],
@@ -61,6 +59,3 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-class CustomButtonStyle {
-  static var outlined;
-}

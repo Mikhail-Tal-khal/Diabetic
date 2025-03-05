@@ -1,33 +1,50 @@
 pluginManagement {
-    val flutterSdkPath = run {
-        val properties = java.util.Properties()
-        file("local.properties").inputStream().use { properties.load(it) }
-        val flutterSdkPath = properties.getProperty("flutter.sdk")
-        require(flutterSdkPath != null) { "flutter.sdk not set in local.properties" }
-        flutterSdkPath
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
     }
+    plugins {
+        id("com.android.application") version "8.1.0"
+        id("org.jetbrains.kotlin.android") version "1.9.0"
+        id("com.google.gms.google-services") version "4.4.0"
+    }
+}
 
-    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
-
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
-    
+    }
 }
+
+rootProject.name = "android"
+include(":app")
+
+// Fix for file access and properties loading
+val localProperties = java.io.File(settingsDir, "local.properties")
+val properties = java.util.Properties()
+if (localProperties.exists()) {
+    java.io.FileInputStream(localProperties).use { stream ->
+        properties.load(stream)
+    }
+}
+
+// Read the Flutter SDK path from local.properties
+val flutterSdkPath = file("local.properties").inputStream().use { propsStream ->
+    java.util.Properties().apply { load(propsStream) }
+        .getProperty("flutter.sdk") ?: error("flutter.sdk not set in local.properties")
+}
+
+// Include Flutter's Gradle build
+includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
 plugins {
-    id("dev.flutter.flutter-plugin-loader") version "1.1.0"
-    id("com.android.application")
-    // START: FlutterFire Configuration
-    id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
-    id("org.jetbrains.kotlin.android") // Updated here from "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id("dev.flutter.flutter-gradle-plugin")
+    id("com.android.application") version "7.2.0" apply false
+    id("com.android.library") version "7.2.0" apply false
+    id("org.jetbrains.kotlin.android") version "1.7.10" apply false
+    id("com.google.gms.google-services") version "4.3.10" apply false
 }
-
 
 include(":app")
-includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
-}

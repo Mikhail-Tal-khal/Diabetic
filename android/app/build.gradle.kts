@@ -1,9 +1,10 @@
 import java.util.Properties
 
 plugins {
-    id("com.android.application") version "8.7.0"
-    id("org.jetbrains.kotlin.android") version "1.8.22"
-    id("com.google.gms.google-services") version "4.3.15"
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
+    id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -12,7 +13,7 @@ repositories {
     mavenCentral()
     // Repository for Flutter artifacts
     maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
-    // Add Flutter engine artifacts from the local Flutter SDK if available.
+    // Add Flutter engine artifacts from the local Flutter SDK if available
     val localPropertiesFile = rootProject.file("local.properties")
     if (localPropertiesFile.exists()) {
         val properties = Properties()
@@ -28,7 +29,7 @@ repositories {
 
 android {
     namespace = "com.example.diabetes_detection"
-    compileSdk = 33
+    compileSdk = 34
     ndkVersion = "27.0.12077973"
 
     compileOptions {
